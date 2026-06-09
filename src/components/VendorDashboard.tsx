@@ -179,7 +179,7 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({ onOpenAuth }) 
     const success = withdrawToMobileMoney(withdrawAmount, payoutProvider, payoutPhone);
     if (success) {
       setWalletFeedback('');
-      alert(`💸 Transfert Réussi !\nUn montant de ${withdrawAmount.toLocaleString()} FCFA a été transféré instantanément vers votre compte ${payoutProvider} (${payoutPhone}).`);
+      alert(`💸 Transfert Réussi !\nUn montant de $${withdrawAmount.toLocaleString()} a été transféré instantanément vers votre compte ${payoutProvider} (${payoutPhone}).`);
       setWithdrawAmount(0);
     }
   };
@@ -271,7 +271,7 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({ onOpenAuth }) 
                   <div>
                     <p className="text-stone-400 text-[10px] uppercase font-mono font-bold">Chiffre d'affaires brut</p>
                     <p className="text-xl sm:text-2xl font-mono font-extrabold text-[#00f7a6] mt-1">
-                      {totalVendorRevenue.toLocaleString()} F CFA
+                      ${totalVendorRevenue.toLocaleString()}
                     </p>
                   </div>
                   <div className="p-3 rounded-xl bg-[#023c32] text-[#00f2c3]">
@@ -289,7 +289,7 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({ onOpenAuth }) 
                   <div>
                     <p className="text-stone-400 text-[10px] uppercase font-mono font-bold">Solde Disponible (Retrait)</p>
                     <p className="text-xl sm:text-2xl font-mono font-extrabold text-[#00d8ff] mt-1">
-                      {walletBalance.toLocaleString()} F
+                      ${walletBalance.toLocaleString()}
                     </p>
                   </div>
                   <div className="p-3 rounded-xl bg-[#023c32] text-[#00d8ff]">
@@ -344,20 +344,20 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({ onOpenAuth }) 
                 {/* Custom Visual graph bars */}
                 <div className="h-56 flex items-end justify-between gap-2.5 pt-8 px-4">
                   {[
-                    { day: 'Lun', sales: 45000, color: 'bg-emerald-600' },
-                    { day: 'Mar', sales: 75000, color: 'bg-emerald-500' },
-                    { day: 'Mer', sales: 120000, color: 'bg-[#00f2c3]' },
-                    { day: 'Jeu', sales: 60000, color: 'bg-emerald-500' },
-                    { day: 'Ven', sales: 95000, color: 'bg-emerald-400' },
-                    { day: 'Sam', sales: 155000, color: 'bg-[#00f7a6] shadow-[0_0_15px_rgba(0,247,166,0.3)]' },
-                    { day: 'Dim', sales: 80000, color: 'bg-emerald-500' }
+                    { day: 'Lun', sales: 90, color: 'bg-emerald-600' },
+                    { day: 'Mar', sales: 150, color: 'bg-emerald-500' },
+                    { day: 'Mer', sales: 240, color: 'bg-[#00f2c3]' },
+                    { day: 'Jeu', sales: 120, color: 'bg-emerald-500' },
+                    { day: 'Ven', sales: 190, color: 'bg-emerald-400' },
+                    { day: 'Sam', sales: 310, color: 'bg-[#00f7a6] shadow-[0_0_15px_rgba(0,247,166,0.3)]' },
+                    { day: 'Dim', sales: 160, color: 'bg-emerald-500' }
                   ].map((bar, idx) => {
-                    const heightPercent = Math.min(100, Math.floor((bar.sales / 160000) * 100));
+                    const heightPercent = Math.min(100, Math.floor((bar.sales / 350) * 100));
                     return (
                       <div key={idx} className="flex-1 flex flex-col items-center group relative cursor-pointer">
                         {/* Tooltip on hover */}
                         <div className="absolute -top-8 bg-[#001714] text-[#00f2c3] text-[9px] font-mono p-1 rounded border border-[#03594c] opacity-0 group-hover:opacity-100 transition-opacity">
-                          {bar.sales.toLocaleString()} F
+                          ${bar.sales.toLocaleString()}
                         </div>
                         <div 
                           className={`w-full rounded-t-lg transition-all duration-500 ${bar.color}`}
@@ -382,7 +382,7 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({ onOpenAuth }) 
                   </div>
                   <p className="leading-relaxed">
                     Chez <strong>AgriElevage Connect</strong>, vous pouvez publier vos produits et récolter des fonds instantanément. 
-                    Tant que vos retraits cumulés ne dépassent pas <strong>1 500 000 FCFA</strong>, aucune pièce d'identité officielle n'est demandée !
+                    Tant que vos retraits cumulés ne dépassent pas <strong>3 000 $ (USD)</strong>, aucune pièce d'identité officielle n'est demandée !
                   </p>
                   <button 
                     onClick={() => alert("Formulaire KYC ouvert :\nVous pouvez charger votre CNI ou Ninea si vous désirez acquérir le badge 'Fournisseur Certifié d'État'.")}
@@ -551,7 +551,7 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({ onOpenAuth }) 
                         </span>
                         
                         <h4 className="font-bold text-xs sm:text-sm text-stone-100 truncate">{product.name}</h4>
-                        <p className="text-[11px] text-[#00f7a6] font-mono font-extrabold">{product.price.toLocaleString()} FCFA</p>
+                        <p className="text-[11px] text-[#00f7a6] font-mono font-extrabold">${product.price.toLocaleString()}</p>
                       </div>
                     </div>
 
@@ -634,12 +634,12 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({ onOpenAuth }) 
                         {order.items.map((item, idx) => (
                           <div key={idx} className="flex justify-between items-center text-xs text-stone-300">
                             <span>{item.name} <strong className="text-[#00f2c3]">x{item.quantity}</strong></span>
-                            <span className="font-mono text-stone-400">{(item.price * item.quantity).toLocaleString()} F</span>
+                            <span className="font-mono text-stone-400">${(item.price * item.quantity).toLocaleString()}</span>
                           </div>
                         ))}
                         <div className="border-t border-[#02332a] pt-1 mt-1.5 flex justify-between text-xs font-extrabold text-white">
                           <span>Montant Total :</span>
-                          <span className="text-[#00f7a6]">{order.total.toLocaleString()} FCFA</span>
+                          <span className="text-[#00f7a6]">${order.total.toLocaleString()}</span>
                         </div>
                       </div>
 
@@ -743,7 +743,7 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({ onOpenAuth }) 
 
               <div className="p-4 bg-[#001714] border border-[#033129] rounded-2xl">
                 <span className="text-[10px] font-mono text-stone-400 uppercase">SOLDE TOTAL DISPONIBLE</span>
-                <p className="text-3xl font-mono font-extrabold text-[#00f7a6] mt-1">{walletBalance.toLocaleString()} F CFA</p>
+                <p className="text-3xl font-mono font-extrabold text-[#00f7a6] mt-1">${walletBalance.toLocaleString()}</p>
                 <span className="text-[9px] text-[#00b59c] leading-none mt-2 block">✓ Commission de plateforme déduite (10%). Aucun autre frais caché !</span>
               </div>
 
@@ -786,15 +786,15 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({ onOpenAuth }) 
 
                   <div>
                     <label className="block text-[11px] uppercase tracking-wider font-mono text-stone-400 font-bold mb-1.5">
-                      Montant à transférer (F CFA) :
+                      Montant à transférer (USD) :
                     </label>
                     <input
                       type="number"
                       required
-                      min="1000"
+                      min="5"
                       value={withdrawAmount === 0 ? '' : withdrawAmount}
                       onChange={(e) => setWithdrawAmount(Number(e.target.value))}
-                      placeholder="Ex: 50000"
+                      placeholder="Ex: 100"
                       className="w-full bg-[#001714] border border-[#033a30] text-xs text-stone-200 rounded-xl p-3 focus:outline-none focus:border-[#00f2c3]"
                     />
                   </div>
@@ -834,7 +834,7 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({ onOpenAuth }) 
                       </div>
 
                       <div className="text-right">
-                        <p className="font-mono text-[#ff4a5a] font-extrabold">- {w.amount.toLocaleString()} F</p>
+                        <p className="font-mono text-[#ff4a5a] font-extrabold">- ${w.amount.toLocaleString()}</p>
                         <span className="text-[9px] text-emerald-400 font-bold uppercase">{w.status}</span>
                       </div>
                     </div>
@@ -905,7 +905,7 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({ onOpenAuth }) 
                     <span className="text-stone-800 font-medium">{item.name}</span>
                     <div className="flex space-x-6 min-w-[120px] justify-between font-mono">
                       <span className="text-stone-500">x{item.quantity}</span>
-                      <strong className="text-stone-800">{(item.price * item.quantity).toLocaleString()} F</strong>
+                      <strong className="text-stone-800">${(item.price * item.quantity).toLocaleString()}</strong>
                     </div>
                   </div>
                 ))}
@@ -917,7 +917,7 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({ onOpenAuth }) 
                   <span>Génération le {viewingInvoiceOrder.date}</span>
                 </div>
                 <div className="text-right text-base font-extrabold text-stone-900 font-mono">
-                  Total : {viewingInvoiceOrder.total.toLocaleString()} F CFA
+                  Total : ${viewingInvoiceOrder.total.toLocaleString()}
                 </div>
               </div>
             </div>
@@ -1013,12 +1013,12 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({ onOpenAuth }) 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-[11px] uppercase tracking-wider font-mono text-stone-400 font-bold mb-1.5">
-                    Prix (FCFA)
+                    Prix (USD)
                   </label>
                   <input
                     type="number"
                     required
-                    min="500"
+                    min="1"
                     value={pPrice === 0 ? '' : pPrice}
                     onChange={(e) => setPPrice(Number(e.target.value))}
                     className="w-full bg-[#001714] border border-[#033a30] text-xs text-stone-200 rounded-xl p-3 focus:outline-none focus:border-[#00f2c3]"

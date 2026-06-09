@@ -79,7 +79,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const [walletBalance, setWalletBalance] = useState<number>(() => {
     const saved = localStorage.getItem('agri_wallet_balance');
-    return saved ? Number(saved) : 185000; // initial vendor payout wallet
+    return saved ? (Number(saved) > 5000 ? Math.round(Number(saved) / 500) : Number(saved)) : 370; // initial vendor payout wallet in USD
   });
 
   const [withdrawals, setWithdrawals] = useState<any[]>(() => {

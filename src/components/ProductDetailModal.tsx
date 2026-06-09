@@ -104,7 +104,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
 
               <div className="flex items-baseline space-x-2">
                 <span className="text-2xl font-mono font-extrabold text-[#D2691E]">
-                  {product.price.toLocaleString()} F CFA
+                  ${product.price.toLocaleString()}
                 </span>
                 <span className="text-[10px] text-sub text-stone-500 font-mono leading-none">
                   TC incl.

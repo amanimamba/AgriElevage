@@ -4,7 +4,7 @@ export interface Product {
   name: string;
   description: string;
   image: string;
-  price: number; // in FCFA (e.g. 15000)
+  price: number; // in USD (e.g. 30)
   stock: number;
   category: 'Aliment' | 'Médicament' | 'Équipement' | 'Autre';
   animalTypes: ('Bovins' | 'Volailles' | 'Porcins' | 'Ovins' | 'Caprins' | 'Équins' | 'Aquaculture' | 'Apiculture')[];
@@ -67,7 +67,7 @@ export interface Course {
   videoPoster: string;
   duration: string;
   isPremium: boolean;
-  price: number; // in FCFA
+  price: number; // in USD
   pdfUrl: string;
   quizQuestions: QuizQuestion[];
 }

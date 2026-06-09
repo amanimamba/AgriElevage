@@ -251,7 +251,7 @@ export const ShopDetails: React.FC<ShopDetailsProps> = ({ onOpenProductDetail })
                     <div className="flex flex-col">
                       <span className="text-[9px] font-mono text-stone-400">PRIX</span>
                       <span className="text-sm font-extrabold text-[#00f7a6]">
-                        {product.price.toLocaleString()} F CFA
+                        ${product.price.toLocaleString()}
                       </span>
                     </div>
 
