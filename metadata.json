@@ -1,0 +1,6 @@
+{
+  "name": "AgriElevage Connect",
+  "description": "Marketplace multi-vendeurs agricole de produits (aliments, médicaments, équipements) & centre de formation certifiant.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
