@@ -14,7 +14,8 @@ export const INITIAL_SHOPS: Shop[] = [
     whatsapp: '221775551234',
     email: 'contact@fermedusahel.sn',
     hours: 'Lun - Sam: 08:00 - 18:30',
-    categories: ['Aliment', 'Équipement']
+    categories: ['Aliment', 'Équipement'],
+    coordinates: { lat: 14.7196, lng: -17.2718 } // Rufisque approx
   },
   {
     id: 'vendor_vetoplus',
@@ -29,7 +30,8 @@ export const INITIAL_SHOPS: Shop[] = [
     whatsapp: '221763445566',
     email: 'info@vetoplus.sn',
     hours: 'Lun - Ven: 08:30 - 19:00, Sam: 09:00 - 14:00',
-    categories: ['Médicament']
+    categories: ['Médicament'],
+    coordinates: { lat: 14.7167, lng: -17.4677 } // Dakar approx
   },
   {
     id: 'vendor_provendier',
@@ -44,7 +46,8 @@ export const INITIAL_SHOPS: Shop[] = [
     whatsapp: '221781204455',
     email: 'sales@provendierexpress.sn',
     hours: 'Tous les jours: 08:00 - 18:00',
-    categories: ['Aliment', 'Équipement', 'Autre']
+    categories: ['Aliment', 'Équipement', 'Autre'],
+    coordinates: { lat: 14.7433, lng: -17.3333 } // Mbao approx
   }
 ];
 

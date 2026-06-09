@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { Product, Shop } from '../types';
+import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow, useAdvancedMarkerRef } from '@vis.gl/react-google-maps';
 import { 
   Search, 
   Filter, 
@@ -32,8 +33,8 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ onOpenAuth, onOpenProd
   const [maxPrice, setMaxPrice] = useState<number>(100);
   const [selectedLocation, setSelectedLocation] = useState<string>('Tous');
   
-  // UI Tabs: 'products' | 'shops'
-  const [activeTab, setActiveTab] = useState<'products' | 'shops'>('products');
+  // UI Tabs: 'products' | 'shops' | 'map'
+  const [activeTab, setActiveTab] = useState<'products' | 'shops' | 'map'>('products');
 
   const categories = ['Tous', 'Aliment', 'Médicament', 'Équipement'];
   const animals = ['Tous', 'Bovins', 'Volailles', 'Porcins', 'Ovins', 'Caprins', 'Équins'];
@@ -276,14 +277,27 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ onOpenAuth, onOpenProd
                   <Store className="w-3.5 h-3.5 text-[#4F7942]" />
                   <span>Voir les Boutiques ({filteredShops.length})</span>
                 </button>
+                <button
+                  onClick={() => setActiveTab('map')}
+                  className={`flex items-center space-x-1.5 py-1.5 px-4 rounded-lg text-xs transition-all cursor-pointer ${
+                    activeTab === 'map' 
+                      ? 'bg-white text-[#4F7942] font-bold shadow-sm' 
+                      : 'text-stone-500 hover:text-stone-800'
+                  }`}
+                >
+                  <MapPin className="w-3.5 h-3.5 text-[#4F7942]" />
+                  <span>Carte des Boutiques</span>
+                </button>
               </div>
 
               {/* Counter status label */}
               <div className="text-[11px] text-stone-500 font-mono">
                 {activeTab === 'products' ? (
                   <span>{filteredProducts.length} Articles trouvés</span>
-                ) : (
+                ) : activeTab === 'shops' ? (
                   <span>{filteredShops.length} Vendeurs certifiés</span>
+                ) : (
+                  <span>Carte interactive</span>
                 )}
               </div>
             </div>
@@ -475,11 +489,65 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ onOpenAuth, onOpenProd
               </div>
             )}
 
+            {/* Map Tab View */}
+            {activeTab === 'map' && (
+              <div className="bg-white border border-stone-200 rounded-3xl overflow-hidden shadow-sm h-[600px] w-full flex flex-col justify-center items-center">
+                {!(process.env.GOOGLE_MAPS_PLATFORM_KEY) || process.env.GOOGLE_MAPS_PLATFORM_KEY === 'YOUR_API_KEY' ? (
+                  <div className="p-8 text-center max-w-md">
+                    <MapPin className="w-12 h-12 text-stone-300 mx-auto mb-4" />
+                    <h2 className="text-lg font-bold text-stone-700 mb-2">Clé API Google Maps requise</h2>
+                    <p className="text-sm text-stone-500 mb-4">Pour afficher la carte interactive des boutiques, veuillez saisir votre clé API Google Maps (GOOGLE_MAPS_PLATFORM_KEY) dans les secrets (Settings).</p>
+                  </div>
+                ) : (
+                  <APIProvider apiKey={process.env.GOOGLE_MAPS_PLATFORM_KEY || ''} version="weekly">
+                    <Map
+                      defaultCenter={{ lat: 14.7167, lng: -17.4677 }}
+                      defaultZoom={11}
+                      mapId="MARKETPLACE_MAP_ID"
+                      internalUsageAttributionIds={['gmp_mcp_codeassist_v1_aistudio']}
+                      style={{ width: '100%', height: '100%' }}
+                    >
+                      {filteredShops.filter(shop => shop.coordinates).map(shop => (
+                        <MarkerWithInfoWindow key={shop.id} shop={shop} />
+                      ))}
+                    </Map>
+                  </APIProvider>
+                )}
+              </div>
+            )}
+
           </section>
 
         </div>
       </main>
 
     </div>
+  );
+};
+
+// Helper component for marker with info window
+const MarkerWithInfoWindow: React.FC<{ shop: Shop }> = ({ shop }) => {
+  const [markerRef, marker] = useAdvancedMarkerRef();
+  const [open, setOpen] = useState(false);
+
+  if (!shop.coordinates) return null;
+
+  return (
+    <>
+      <AdvancedMarker ref={markerRef} position={shop.coordinates} onClick={() => setOpen(true)} title={shop.name}>
+        <Pin background="#4F7942" glyphColor="#fff" borderColor="#3D5E32" />
+      </AdvancedMarker>
+      {open && (
+        <InfoWindow anchor={marker} onCloseClick={() => setOpen(false)}>
+          <div className="p-2 max-w-[200px]">
+            <h4 className="font-bold text-[#4F7942] mb-1">{shop.name}</h4>
+            <p className="text-xs text-stone-600 mb-2 truncate">{shop.location}</p>
+            <Link to={`/boutique/${shop.id}`} className="text-xs font-bold text-[#D2691E] hover:underline">
+              Visiter la boutique →
+            </Link>
+          </div>
+        </InfoWindow>
+      )}
+    </>
   );
 };

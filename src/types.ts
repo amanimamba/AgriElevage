@@ -27,6 +27,7 @@ export interface Shop {
   email: string;
   hours: string;
   categories: string[];
+  coordinates?: { lat: number; lng: number };
 }
 
 export interface Review {
